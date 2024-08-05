@@ -1,0 +1,227 @@
+<div class="d-flex">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" class="btn btn-success"
+    style="margin-left: 75rem; margin-top:1rem;margin-bottom:1rem;" (click)="openModal()">+Add Users</button>
+</div>
+<nav class="navbar navbar-secondary bg-secondary">
+  <div class="container-fluid">
+    <form [formGroup]="reactiveForm1">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <select class="form-control" formControlName="state" (change)="getDivision($event)">
+                <option value="all" Select State>Select State</option>
+                <option *ngFor="let sta of state" [value]="sta.id">{{sta.state}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <select formControlName="division" class="form-control input-select" (change)="getDistrict($event)">
+                <option value="all">Select Division</option>
+                <option *ngFor="let di of division" [value]="di.id">{{di.division}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <select formControlName="district" class="form-control input-select" (change)="getTaluka($event)">
+                <option value="all">Select District</option>
+                <option *ngFor="let dis of district" [value]="dis.id">{{dis.district}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <select formControlName="taluka" class="form-control input-select">
+                <option value="all" select taluka>All Taluka</option>
+                <option *ngFor="let tal of taluka" [value]="tal.id" >{{tal.taluka}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <button type="button" style="margin-right: 25rem;margin-left: 8rem;">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</nav>
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th scope="col-2">Sr.No.</th>
+      <th scope="col-2">Name</th>
+      <th scope="col-2">Role</th>
+      <th scope="col-2">Mobile No.</th>
+      <th scope="col-2">User Type</th>
+      <th scope="col-2">Sub User Type</th>
+      <th scope="col-2">DSC Status</th>
+      <th scope="col-2">Block/Unblock</th>
+      <th scope="col-2">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let react of reactivearray let i=index">
+      <td>{{react.id}}</td>
+      <td>{{react.name}}</td>
+      <td>{{react.roleType}}</td>
+      <td>{{react.mobileNo}}</td>
+      <td>{{react.userType}}</td>
+      <td>{{react.subUserType}}</td>
+      <td>{{react.dsc}}</td>
+      <td>{{react.block}}</td>
+
+      <td>
+        <button type="button" class="btn btn-info" style="margin-right: 1rem;" (click)="update(react)"
+          class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" class="btn btn-success">Edit</button>
+        <button type="button" class="btn btn-danger" (click)="delTb(i)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document" style="margin-right: 35rem;margin-top:5rem">
+    <div class="modal-content" style="width: 50rem;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+        <button type="button" id="close-modal" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="reactiveForm">
+          <div class="col-mb-12">
+            <div class="row">
+              <div class="col-3">
+                <div class="form-group">
+                  <select name="pname" id="pname" class="form-control" formControlName="projectName">
+                    <option value="">Select Project</option>
+                    <option *ngFor="let project of userProjectapi" value="{{project.id}}">{{project.projectName}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <select name="utype" id="utype" class="form-control" formControlName="userType"
+                    (change)="bindSubUser(reactiveForm.controls['userType'].value,reactiveForm.controls['projectName'].value); bindRole(reactiveForm.controls['userType'].value,reactiveForm.controls['projectName'].value)">
+                    <option value="">Select User Type
+                    <option *ngFor="let usertype of userTypeapi" value="{{usertype.userTypeId}}">{{usertype.userType}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <select name="suser" id="suser" class="form-control" formControlName="subUserType">
+                    <option value="">Select Sub User
+                    <option *ngFor="let subUserType of subusertypeapi" value="{{subUserType.subUserTypeId}}">
+                      {{subUserType.subUserType}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <select name="srole" id="srole" class="form-control" formControlName="roleType">
+                    <option value="">Select Role
+                    <option *ngFor="let roleType of roleapi" value="{{roleType.roleId}}">{{roleType.roleType}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-3">
+                <div class="form-group">
+                  <select class="form-control" formControlName="state" (change)="getDivision($event)">
+                    <option value="all" Select State>Select State</option>
+                    <option *ngFor="let sta of state" [value]="sta.id">{{sta.state}}</option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="col-3">
+                <div class="form-group">
+                  <select formControlName="division" class="form-control input-select" (change)="getDistrict($event)">
+                    <option value="all">Select Division</option>
+                    <option *ngFor="let di of division" [value]="di.id">{{di.division}}</option>
+                  </select>
+                </div>
+              </div> -->
+              <!-- <div class="col-3">
+                <div class="form-group">
+                  <select formControlName="district" class="form-control input-select" (change)="getTaluka($event)">
+                    <option value="all">Select District</option>
+                    <option *ngFor="let dis of district" [value]="dis.id">{{dis.district}}</option>
+                  </select>
+                </div>
+              </div> -->
+               <!-- <div class="col-3">
+                <div class="form-group">
+                  <select formControlName="district" class="form-control input-select" (change)="getTaluka($event)">
+                    <option value="all">Select SDO</option>
+                    <option *ngFor="let dis of district" [value]="dis.id">{{dis.district}}</option>
+                  </select>
+                </div>
+              </div> -->
+          <div class="col-mb-12">
+            <div class="row">
+              <div class="col-3">
+                <input type="text" formControlName="name" class="form-control" placeholder=" Bidder Name*">
+                <span class="error" *ngIf="name.invalid && name.touched">Bidder Name is required</span>
+              </div>
+              <div class="col-3">
+                <input type="text" formControlName="mobileNo" (keypress)="OnlyNumbersAllowed($event)"
+                  placeholder="Mobile Number*" maxlength="10">
+                <span class="error" *ngIf="mobileNo.invalid && mobileNo.touched">MobileNo is required</span>
+
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <input type="text" formControlName="userName" class="form-control" placeholder=" Username*">
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <select name="designation" id="designation" class="form-control" formControlName="designationType">
+                    <option value="">Select Designation
+                    <option *ngFor="let desi of designationType" value="{{desi?.id}}">{{desi?.designation}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-mb-12">
+            <div class="row">
+              <div class="col-3">
+                <input type="emailId" formControlName="emailId" class="form-control" placeholder="Email ID">
+                <span class="error" *ngIf="email.invalid && email.touched">email is invalid</span>
+              </div>
+              <div class="col-9">
+                <input type="text" formControlName="userAddress" class="form-control" placeholder="Address"
+                  maxlength="50">
+                <span class="error" *ngIf="userAddress.invalid && userAddress.touched">Address is required</span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
+            <button type="button" class="btn btn-primary" (click)="Submit()"
+              style="margin-right: 15rem;">{{btnText}}</button>
+          </div>
+          </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
